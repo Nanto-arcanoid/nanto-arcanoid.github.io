@@ -7,8 +7,6 @@ body{
 	background:#000;
 }
 #box{
-	width:500px;
-	height:600px;
 	background:#aaa;
 	margin:50px auto 0;
 	position:relative;
@@ -21,4 +19,11 @@ body{
 	background:#555;
 	bottom:20px;
 	left:0;
+}
+#ball{
+	position:absolute;
+	border-radius:50%;
+	background:#000;
+	/*bottom:40px;*/
+	/*left:70px; вынести в js*/
 }
