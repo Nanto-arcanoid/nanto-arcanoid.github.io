@@ -8,9 +8,10 @@ $(document).ready(function(){
 
 	$("body").on("mousemove", box, function(e) {
 		mouseCoords = Math.round((e.pageX - boxOffset.left) / 10) * 10 - 50;
-		if (mouseCoords >= 405) {mouseCoords = 405};
-		if (mouseCoords <= -5) {mouseCoords = -5};
 	});
+	
+	if (mouseCoords >= 405) {mouseCoords = 405};
+	if (mouseCoords <= -5) {mouseCoords = -5};
 
 	animate();
 
