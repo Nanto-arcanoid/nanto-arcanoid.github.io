@@ -10,30 +10,30 @@ $(document).ready(function(){
 	var posY = 40;
 	var shiftX = 1;
 	var shiftY = 1;
+	var mouseCoords = 0;
+	var yPos = false;
 	$("#box").css("width", widthBox).css("height", heightBox);
 	$("#ball.startpos").css("width", widthBall).css("height", heightBall).css("left", posX).css("bottom", posY);
 
 
 	var box = $("#box"),
 		boxOffset = box.offset(),
-		mouseCoords = boxOffset.left,
 		time,
-		speed,
-		ratioFirstStrike = 1;
+		speed;
 
 	$("body").on("mousemove", box, function(e) {
-		mouseCoords = Math.round((e.pageX - boxOffset.left) / 10) * 10 - 50;
+		mouseCoords = Math.round((e.pageX - boxOffset.left) / 10) * 10;
 	});
 
 
 	animate();
 
 	function move() {
-			if (mouseCoords >= (innerWidth + 5 - 100)) {mouseCoords = (innerWidth + 5 -100)};
+			if (mouseCoords >= (innerWidth - 70)) {mouseCoords = (innerWidth - 70)};
 			if (mouseCoords <= -5) {mouseCoords = -5};
 			
 			var now = new Date().getTime(),
-				dt = (now - (time || now)) / 4;
+				dt = (now - (time || now));
 				dtBall = (now - (time || now)) / 2;
 				time = now,
 				oldPos = parseFloat($("#mover").css("left")),
@@ -53,26 +53,37 @@ $(document).ready(function(){
 				$("#ball.startpos").css("left", tempPos + 70);
 			};
 
-			posX = parseInt($("#ball").css("left"));
+				posX = parseInt($("#ball").css("left"));
 				posY = parseInt($("#ball").css("bottom"));
-				//console.log(posX, posY);
+				posMovXStart = parseFloat($("#mover").css("left"));
+				posMovXEnd = parseFloat($("#mover").css("left")) + 100;
 
 				if(posX > innerWidth) {
 					posX = innerWidth;
 					shiftX = -(shiftX);
 				};
+
 				if(posY > innerHeight) {
 					posY = innerHeight;
 					shiftY = -(shiftY);
+					yPos = true;
 				};
+
 				if(posX < 0) {
 					posX = 0;
 					shiftX = -(shiftX);
 				};
-				if(posY < 0) {
-					posY = 0;
-					shiftY = -(shiftY);
+				
+				if(posY < -30) {
+					alert("Упс");
+					window.location.reload();
 				};
+
+				if(posY <= 41 && yPos == true && posX > posMovXStart && posX < posMovXEnd) {
+					shiftY = -(shiftY);
+					yPos = false;
+				};
+
 				posX += (shiftX * dtBall);
 				posY += (shiftY * dtBall);
 
