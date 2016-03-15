@@ -6,14 +6,18 @@ $(document).ready(function(){
 	var heightBall = 30;
 	var innerWidth = widthBox - widthBall;
 	var innerHeight = heightBox - heightBall;
-	var posX = 70;
-	var posY = 40;
+	var moverX = 0;
+	var ballX = moverX + 70;
+	var ballY = 40;
 	var shiftX = 1;
 	var shiftY = 1;
 	var mouseCoords = 0;
 	var yPos = false;
+	var tempPos = moverX;
+	
 	$("#box").css("width", widthBox).css("height", heightBox);
-	$("#ball.startpos").css("width", widthBall).css("height", heightBall).css("left", posX).css("bottom", posY);
+	$("#ball.startpos").css("width", widthBall).css("height", heightBall).css("left", ballX).css("bottom", ballY);
+	$("#mover").css("left", moverX);
 
 
 	var box = $("#box"),
@@ -34,10 +38,8 @@ $(document).ready(function(){
 			
 			var now = new Date().getTime(),
 				dt = (now - (time || now));
-				dtBall = (now - (time || now)) / 2;
+				dtBall = (now - (time || now));
 				time = now,
-				oldPos = parseFloat($("#mover").css("left")),
-				tempPos = oldPos,
 				newPos = mouseCoords - tempPos;
 
 			if (newPos > 10) {
@@ -53,41 +55,39 @@ $(document).ready(function(){
 				$("#ball.startpos").css("left", tempPos + 70);
 			};
 
-				posX = parseInt($("#ball").css("left"));
-				posY = parseInt($("#ball").css("bottom"));
-				posMovXStart = parseFloat($("#mover").css("left"));
-				posMovXEnd = parseFloat($("#mover").css("left")) + 100;
+				ballX += (shiftX * dtBall);
+				ballY += (shiftY * dtBall);
+				posMovXStart = tempPos;
+				posMovXEnd = tempPos + 100;
+				console.log(ballY);
 
-				if(posX > innerWidth) {
-					posX = innerWidth;
+				if(ballX > innerWidth) {
+					ballX = innerWidth;
 					shiftX = -(shiftX);
 				};
 
-				if(posY > innerHeight) {
-					posY = innerHeight;
+				if(ballY > innerHeight) {
+					ballY = innerHeight;
 					shiftY = -(shiftY);
 					yPos = true;
 				};
 
-				if(posX < 0) {
-					posX = 0;
+				if(ballX < 0) {
+					ballX = 0;
 					shiftX = -(shiftX);
 				};
 				
-				if(posY < -30) {
+				if(ballY <= 39) {
 					alert("Упс");
 					window.location.reload();
 				};
 
-				if(posY <= 41 && yPos == true && posX > posMovXStart && posX < posMovXEnd) {
+				if(ballY <= 41 && ballY > 39 && yPos == true && ballX > posMovXStart && ballX < posMovXEnd) {
 					shiftY = -(shiftY);
 					yPos = false;
 				};
 
-				posX += (shiftX * dtBall);
-				posY += (shiftY * dtBall);
-
-				$("#ball.movepos").css("left", posX).css("bottom", posY);
+				$("#ball.movepos").css("left", ballX).css("bottom", ballY);
 
 
 			$("body").on("click", box, function() {
@@ -99,7 +99,8 @@ $(document).ready(function(){
 
 	function animate() {
 		requestAnimFrame(animate);
-		move();
+		//move();
+		setTimeout(move(), 10);
 	}
 
 });
